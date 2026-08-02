@@ -1,6 +1,7 @@
-import { Search, ArrowRight } from "lucide-react";
+import { Search, ArrowRight, Calendar } from "lucide-react";
 
 export default function Hero({ query, setQuery }) {
+  const numberOfEvents = 100; // Replace with the actual number of events from your data source
   return (
     <div className="relative h-[400px] w-full flex gap-40">
       <div className="flex flex-col justify-center">
@@ -23,11 +24,18 @@ export default function Hero({ query, setQuery }) {
           </button>
         </div>
       </div>
-      <img
-        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80"
-        alt=""
-        className="h-[400px] w-full object-cover"
-      />
+      <div className="relative ">
+        <span className="absolute bottom-10 right-3 bg-white text-xs font-medium px-2 py-1 rounded">
+          <Calendar className="text-green-700"/> {numberOfEvents}+ events
+          <p className="text-gray-500">This week</p>
+        </span>
+        <img
+          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80"
+          alt=""
+          className="h-[400px] w-full object-cover"
+        />
+      </div>
+      
     </div>
   );
 }
