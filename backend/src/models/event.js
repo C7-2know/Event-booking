@@ -28,7 +28,6 @@ const eventSchema = new mongoose.Schema({
             'Education',
             'Community & Charity',
             'Travel & Adventure',
-            'Fashion & Beauty',
             'Film & Entertainment',
             'Gaming',
             'Science & Innovation',
