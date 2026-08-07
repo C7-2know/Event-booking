@@ -1,2 +1,19 @@
-import { Link } from 'react-router-dom'
-export default function NotFound(){return <div className="page-wrap grid min-h-[65vh] place-items-center py-20 text-center"><div><p className="text-7xl font-bold tracking-[-.1em] text-emerald">404</p><h1 className="mt-4 text-3xl font-bold tracking-[-.06em]">This page slipped off the calendar.</h1><p className="mt-3 text-muted">Let’s get you somewhere more interesting.</p><Link to="/" className="btn-primary mt-7">Browse events</Link></div></div>}
+import { Link } from "react-router-dom";
+export default function NotFound() {
+  return (
+    <div className="page-wrap grid min-h-[65vh] place-items-center py-20 text-center">
+      <div>
+        <p className="text-7xl font-bold tracking-[-.1em] text-emerald">404</p>
+        <h1 className="mt-4 text-3xl font-bold tracking-[-.06em]">
+          This page slipped off the calendar.
+        </h1>
+        <p className="mt-3 text-muted">
+          Let’s get you somewhere more interesting.
+        </p>
+        <Link to="/" className="btn-primary mt-7">
+          Browse events
+        </Link>
+      </div>
+    </div>
+  );
+}
