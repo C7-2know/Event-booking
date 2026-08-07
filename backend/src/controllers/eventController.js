@@ -3,7 +3,6 @@ const eventService = require("../services/eventService");
 exports.createEvent = async (req, res, next) => {
   try {
     const user = req.user;
-    console.log("user id in controller", user);
     const event = await eventService.createEvent(req.body, user.id);
     res.status(201).json(event);
   } catch (error) {
@@ -34,7 +33,10 @@ exports.getEventById = async (req, res, next) => {
 
 exports.updateEvent = async (req, res, next) => {
   try {
-    const updatedEvent = await eventService.updateEvent(req.params.id, req.body);
+    const updatedEvent = await eventService.updateEvent(
+      req.params.id,
+      req.body,
+    );
     if (!updatedEvent) {
       return res.status(404).json({ message: "Event not found" });
     }
