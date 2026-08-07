@@ -1,4 +1,14 @@
-const categories = ["All", "Music", "Technology", "Community", "Business", "Education", "Health", "Outdoor"];
+const categories = [
+  "All",
+  "Music",
+  "Technology",
+  "Community",
+  "Religion",
+  "Business",
+  "Education",
+  "Health",
+  "Outdoor",
+];
 
 export default function CategoryFilter({ selected, onSelect }) {
   return (
