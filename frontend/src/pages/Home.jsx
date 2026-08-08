@@ -1,6 +1,5 @@
 // pages/Home.jsx
 import { useState, useMemo, useEffect } from "react";
-import mockEvents from "../data/mockEvents";
 import Hero from "../components/Hero";
 import CategoryFilter from "../components/CategoryFilter";
 import EventGrid from "../components/EventGrid";
@@ -16,28 +15,27 @@ export default function Home() {
   const [sortBy, setSortBy] = useState("date"); // New state for sorting
   const [events, setEvents] = useState([]);
 
-  const fetchEvents = () => {
-    const allEvents = eventService.getAll();
-    setEvents(allEvents);
-  }
-
   const filtered = useMemo(() => {
-    return mockEvents.filter((e) => {
+    return events.filter((e) => {
       const matchesQuery = e.title.toLowerCase().includes(query.toLowerCase());
       const matchesCategory = category === "All" || e.category === category;
 
       return matchesQuery && matchesCategory;
     });
-  }, [query, category]);
+  }, [events, query, category]);
 
   useEffect(() => {
+    async function fetchEvents() {
+      const allEvents = await eventService.getAll();
+      setEvents(allEvents);
+    }
     fetchEvents();
   }, []);
 
   useEffect(() => {
     setPage(1); // Reset to first page when query or category changes
   }, [query, category]);
-  
+
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const visibleEvents = filtered.slice(
     (page - 1) * PAGE_SIZE,
@@ -55,7 +53,7 @@ export default function Home() {
         }}
       />
       <div className="flex justify-between items-center mt-3">
-        <p className="text-sm text-gray-500 mt-6">
+        <p className="text-sm text-gray-600 mt-6">
           Showing {visibleEvents.length ? (page - 1) * PAGE_SIZE + 1 : 0}–
           {(page - 1) * PAGE_SIZE + visibleEvents.length} of {filtered.length}{" "}
           events
