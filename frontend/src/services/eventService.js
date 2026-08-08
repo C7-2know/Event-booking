@@ -1,0 +1,183 @@
+import client from "../api/client";
+const events = [
+  {
+    id: "design-week",
+    title: "Designing for the Undecided",
+    category: "Design",
+    date: "2026-08-16",
+    time: "18:30",
+    location: "The Green Room, Hargeisa",
+    price: 18,
+    capacity: 80,
+    remaining: 22,
+    image:
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=85",
+    featured: true,
+    description:
+      "A thoughtful evening on designing products that earn trust before they demand attention. Hear from practitioners building calm, useful digital experiences.",
+  },
+  {
+    id: "founders-table",
+    title: "The Founders’ Table",
+    category: "Business",
+    date: "2026-08-22",
+    time: "19:00",
+    location: "The Village, Mogadishu",
+    price: 25,
+    capacity: 40,
+    remaining: 8,
+    image:
+      "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=1200&q=85",
+    featured: true,
+    description:
+      "An intimate dinner and conversation for the people creating the next chapter of their companies. Come prepared with one honest question.",
+  },
+  {
+    id: "after-the-rain",
+    title: "After the Rain: Open Air Cinema",
+    category: "Culture",
+    date: "2026-08-29",
+    time: "20:00",
+    location: "Jazeera Beach, Mogadishu",
+    price: 12,
+    capacity: 180,
+    remaining: 67,
+    image:
+      "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=85",
+    featured: true,
+    description:
+      "A slow summer night of films, sea air and good conversation. Bring a light layer; we will bring the projector and the popcorn.",
+  },
+  {
+    id: "slow-morning",
+    title: "Slow Morning, Strong Bodies",
+    category: "Wellness",
+    date: "2026-09-05",
+    time: "07:30",
+    location: "Peace Garden, Hargeisa",
+    price: 10,
+    capacity: 30,
+    remaining: 11,
+    image:
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=85",
+    description:
+      "A grounded outdoor movement session for every level, followed by coffee from local roasters.",
+  },
+  {
+    id: "texture-taste",
+    title: "Texture & Taste",
+    category: "Food",
+    date: "2026-09-12",
+    time: "17:00",
+    location: "Maan Restaurant, Mogadishu",
+    price: 32,
+    capacity: 50,
+    remaining: 4,
+    image:
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=85",
+    description:
+      "Five courses, five stories and an evening dedicated to the quiet art of eating together.",
+  },
+  {
+    id: "photo-walk",
+    title: "The City in Soft Light",
+    category: "Creative",
+    date: "2026-09-19",
+    time: "16:30",
+    location: "Old Town, Hargeisa",
+    price: 8,
+    capacity: 25,
+    remaining: 13,
+    image:
+      "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=85",
+    description:
+      "A guided photo walk for curious eyes. Any camera is welcome, including the one in your pocket.",
+  },
+  {
+    id: "archive-session",
+    title: "The Archive Session",
+    category: "Music",
+    date: "2026-06-11",
+    time: "19:30",
+    location: "The Listening Room, Hargeisa",
+    price: 15,
+    capacity: 70,
+    remaining: 0,
+    image:
+      "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=1200&q=85",
+    description: "A past gathering from our listening series.",
+  },
+];
+const pause = (data) =>
+  new Promise((resolve) => setTimeout(() => resolve(data), 220));
+const normalizeEvent = (event) => ({
+  ...event,
+  id: event.id || event._id,
+  date: typeof event.date === "string" ? event.date.slice(0, 10) : event.date,
+  time: event.time || event.startTime,
+  location:
+    event.location ||
+    [event.locationName, event.locationCity].filter(Boolean).join(", "),
+  remaining: event.remaining ?? event.availabelSeats,
+  type: event.type || event.eventType,
+  address: event.address || event.locationAddress,
+  city: event.city || event.locationCity,
+});
+
+const requestOrMock = async (request, fallback) => {
+  try {
+    return await request();
+  } catch (error) {
+    if (error.response) throw error;
+    return fallback();
+  }
+};
+export const eventService = {
+  getAll: () =>
+    (async () => {
+      const response = await client.get("/events");
+      return response.data.map(normalizeEvent);
+    })(),
+  getFeatured: () => pause(events.filter((e) => e.featured)),
+  getById: (id) =>
+    requestOrMock(
+      async () => normalizeEvent((await client.get(`/events/${id}`)).data),
+      () => pause(events.find((e) => e.id === id)),
+    ),
+  create: (data) =>
+    (async () => {
+      const response = await client.post("/events", toBackendEvent(data));
+      return normalizeEvent(response.data);
+    })(),
+  update: (id, data) =>
+    requestOrMock(
+      async () =>
+        normalizeEvent(
+          (await client.put(`/events/${id}`, toBackendEvent(data))).data,
+        ),
+      () => pause({ ...events.find((e) => e.id === id), ...data }),
+    ),
+  remove: (id) =>
+    requestOrMock(
+      async () => (await client.delete(`/events/${id}`)).data,
+      () => pause(true),
+    ),
+};
+function toBackendEvent(event) {
+  return {
+    title: event.title,
+    description: event.description,
+    category: event.category,
+    eventType: event.event_type,
+    date: event.date,
+    startTime: event.startTime,
+    endTime: event.endTime,
+    locationName: event.locationName,
+    locationAddress: event.address,
+    locationCity: event.city,
+    capacity: Number(event.capacity),
+    price: Number(event.price) || 0,
+    availabelSeats: Number(event.remaining) || Number(event.capacity),
+    image: event.image,
+  };
+}

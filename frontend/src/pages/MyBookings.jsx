@@ -3,16 +3,26 @@ import { useEffect, useMemo, useState } from "react";
 import { bookingService } from "../services/bookingService";
 import BookingRow from "../components/BookingRow";
 import EmptyState from "../components/EmptyState";
+import { useAuth } from "../context/AuthContext";
 
 const TABS = ["upcoming", "past", "all"];
 
 export default function MyBookings() {
   const [bookings, setBookings] = useState([]);
+  const { user } = useAuth();
   const [filter, setFilter] = useState("upcoming");
 
   useEffect(() => {
-    bookingService.getMine().then(setBookings);
-  }, []);
+    async function fetchBookings() {
+      try {
+        const data = await bookingService.getUserBookings(user.id);
+        setBookings(data);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    }
+    fetchBookings();
+  }, [user.id]);
 
   const now = new Date();
 
@@ -37,7 +47,9 @@ export default function MyBookings() {
   return (
     <div className="max-w-4xl mx-auto py-10">
       <h1 className="text-2xl font-semibold text-gray-900">My Bookings</h1>
-      <p className="mt-1 text-sm text-gray-500">Manage your upcoming and past events.</p>
+      <p className="mt-1 text-sm text-gray-500">
+        Manage your upcoming and past events.
+      </p>
 
       <div className="mt-8 flex items-center justify-between border-b border-gray-100">
         <div className="flex gap-6">
@@ -67,7 +79,11 @@ export default function MyBookings() {
         <div className="mt-10">
           <EmptyState
             title="Nothing here yet"
-            text={filter === "past" ? "Your past events will appear here." : "Your upcoming plans will appear here."}
+            text={
+              filter === "past"
+                ? "Your past events will appear here."
+                : "Your upcoming plans will appear here."
+            }
           />
         </div>
       )}
