@@ -17,10 +17,10 @@ export default function CategoryFilter({ selected, onSelect }) {
         <button
           key={cat}
           onClick={() => onSelect(cat)}
-          className={`px-4 py-2 rounded-md text-sm border ${
+          className={`px-4 py-2 rounded-md text-md border ${
             selected === cat
-              ? "bg-green-700 border-emerald-700 text-white"
-              : "border-gray-200 text-gray-600 hover:bg-green-700"
+              ? "bg-green-800 border-emerald-700 text-white"
+              : "border-gray-200 text-gray-600 hover:bg-green-700 hover:text-white"
           }`}
         >
           {cat}

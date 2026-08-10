@@ -24,7 +24,7 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   return (
     <header className="flex items-center justify-between px-8 py-4 border-b border-gray-100">
-      <div className="flex items-center gap-2 font-semibold text-lg">
+      <div className="flex items-center gap-2 font-bold text-lg">
         <Leaf size={20} className="text-green-700" />
         AbroHub
       </div>
@@ -35,10 +35,10 @@ export default function Navbar() {
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              `pb-1 text-sm font-medium ${
+              `pb-1 text-md font-bold ${
                 isActive
                   ? "text-green-700 border-b-2 border-green-700"
-                  : "text-gray-500 hover:text-gray-800"
+                  : "text-gray-900 hover:text-gray-800"
               }`
             }
           >
