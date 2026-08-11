@@ -15,7 +15,7 @@ const linkClass = ({ isActive }) =>
 const navItems = [
   { label: "Explore", path: "/" },
   { label: "My Bookings", path: "/bookings" },
-  { label: "Profile", path: "/profile" },
+  // { label: "Profile", path: "/profile" },
   { label: "Admin", path: "/admin", adminOnly: true },
   { label: "About", path: "/about" },
 ];
@@ -49,9 +49,11 @@ export default function Navbar() {
 
       <div className="flex items-center gap-4">
         <Bell size={18} className="text-gray-500" />
-        <button className="flex items-center gap-2 bg-green-800 text-white text-sm px-4 py-2 rounded-lg">
-          <span>{user?.name || "User"}</span>
-        </button>
+        <Link to="/profile" className="flex items-center gap-2">
+          <button className="flex items-center gap-2 bg-green-800 text-white text-sm px-4 py-2 rounded-lg">
+            <span>{user?.name || "User"}</span>
+          </button>
+        </Link>
         <LogOut
           size={18}
           className="text-green-200 cursor-pointer"

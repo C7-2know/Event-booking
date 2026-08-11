@@ -16,6 +16,7 @@ import EventForm from "./pages/admin/EventForm";
 import Participants from "./pages/admin/Participants";
 import ManageBookings from "./pages/admin/ManageBookings";
 import ManageUsers from "./pages/admin/ManageUsers";
+import About from "./pages/About";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/events/:eventId" element={<EventDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/about" element={<About />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/bookings" element={<MyBookings />} />
               <Route path="/profile" element={<Profile />} />
