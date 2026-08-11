@@ -46,7 +46,7 @@ class BookingService {
     const booking = await Booking.findByIdAndUpdate(
       bookingId,
       { status },
-      { new: true },
+      { returnDocument: "after" },
     );
     return booking;
   }

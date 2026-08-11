@@ -28,7 +28,7 @@ class EventService {
 
   async updateEvent(eventId, updatedData) {
     const updatedEvent = await Event.findByIdAndUpdate(eventId, updatedData, {
-      new: true,
+      returnDocument: "after",
     });
     if (!updatedEvent) {
       throw new Error("Event not found");
