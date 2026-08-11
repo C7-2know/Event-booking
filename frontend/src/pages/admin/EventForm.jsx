@@ -11,7 +11,7 @@ export default function EventForm() {
       date: "",
       startTime: "",
       endTime: "",
-      event_type: "",
+      event_type: "Indoor",
       locationName: "",
       address: "",
       city: "",

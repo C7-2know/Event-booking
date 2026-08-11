@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { userService } from "../services/userService";
 export default function Profile() {
   const { user, setUser } = useAuth();
   const [form, setForm] = useState({ ...user }),
@@ -7,8 +8,10 @@ export default function Profile() {
   const save = (e) => {
     e.preventDefault();
     setUser(form);
-    localStorage.setItem("eventoria_user", JSON.stringify(form));
-    setSaved(true);
+    userService.updateProfile(user.id, form).then(() => {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    });
   };
   return (
     <div className="page-wrap max-w-4xl py-12 md:py-16">
@@ -39,6 +42,7 @@ export default function Profile() {
             Email address
             <input
               value={form.email}
+              disabled
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="form-input mt-2"
             />

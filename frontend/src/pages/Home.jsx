@@ -16,13 +16,24 @@ export default function Home() {
   const [events, setEvents] = useState([]);
 
   const filtered = useMemo(() => {
-    return events.filter((e) => {
+    const result = events.filter((e) => {
       const matchesQuery = e.title.toLowerCase().includes(query.toLowerCase());
       const matchesCategory = category === "All" || e.category === category;
 
       return matchesQuery && matchesCategory;
     });
-  }, [events, query, category]);
+
+    const sorted = [...result].sort((a, b) => {
+      if (sortBy === "date") {
+        return new Date(a.date) - new Date(b.date);
+      } else if (sortBy === "price") {
+        return a.price - b.price;
+      }
+      return 0;
+    });
+
+    return sorted;
+  }, [events, query, category, sortBy]);
 
   useEffect(() => {
     async function fetchEvents() {
@@ -34,7 +45,7 @@ export default function Home() {
 
   useEffect(() => {
     setPage(1); // Reset to first page when query or category changes
-  }, [query, category]);
+  }, [query, category, sortBy]);
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const visibleEvents = filtered.slice(
@@ -61,19 +72,22 @@ export default function Home() {
 
         {/* add sortby and filter options */}
         <div className="flex gap-2 p-3">
-          <select
-            className="border border-gray-50 rounded-md py-1 text-sm p-5"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option>Sort by</option>
-            <option className="text-sm bg-emerald-100" value="date">
-              Date
-            </option>
-            <option className="text-sm bg-emerald-100" value="price">
-              Price
-            </option>
-          </select>
+          <label className="block text-sm font-semibold">
+            Sort by:
+            <select
+              name="sortBy"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="border border-green-100 rounded-sm p-1 ml-2"
+            >
+              <option className="text-sm bg-emerald-100 " value="date">
+                Date
+              </option>
+              <option className="text-sm bg-emerald-100" value="price">
+                Price
+              </option>
+            </select>
+          </label>
         </div>
       </div>
       <EventGrid events={visibleEvents} />
