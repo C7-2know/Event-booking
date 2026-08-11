@@ -25,6 +25,8 @@ const MOCK_USERS = [
   },
 ];
 
+import client from "../api/client";
+
 export const userService = {
   getAll: async () => {
     await new Promise((r) => setTimeout(r, 300));
@@ -43,5 +45,10 @@ export const userService = {
     const user = MOCK_USERS.find((u) => u.id === userId);
     if (user) user.status = status;
     return user;
+  },
+
+  updateProfile: async (userId, profileData) => {
+    const response = await client.put(`/users/${userId}`, profileData);
+    return response.data;
   },
 };

@@ -94,25 +94,32 @@ export default function Dashboard() {
           </thead>
           <tbody>
             {recentEvents.map((event) => (
-              <tr key={event.id} className="border-t border-gray-100">
+              <tr key={event.id} className="border-t border-gray-100 -md">
                 <td className="px-5 py-3 flex items-center gap-2">
                   <img
                     src={event.image}
                     alt=""
+                    text
                     className="h-14 w-14 rounded object-cover"
                   />
-                  <span className="text-gray-900">{event.title}</span>
+                  <span className="text-gray-900 font-semibold">
+                    {event.title}
+                  </span>
                 </td>
-                <td className="px-5 py-3 text-gray-600">{event.date}</td>
-                <td className="px-5 py-3 text-gray-600">{event.category}</td>
-                <td className="px-5 py-3 text-gray-600">
+                <td className="px-5 py-3 text-gray-600 font-semibold">
+                  {event.date}
+                </td>
+                <td className="px-5 py-3 text-gray-600 font-semibold">
+                  {event.category}
+                </td>
+                <td className="px-5 py-3 text-gray-600 font-semibold">
                   {event.price > 0 ? `Br ${event.price}` : "Free"}
                 </td>
-                <td className="px-5 py-3 text-gray-600">
+                <td className="px-5 py-3 text-gray-600 font-semibold">
                   {event.remaining} / {event.capacity}
                 </td>
                 <td className="px-5 py-3">
-                  <span className="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700">
+                  <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-emerald-700">
                     Upcoming
                   </span>
                 </td>
@@ -120,11 +127,11 @@ export default function Dashboard() {
                   <div className="flex justify-end gap-3">
                     <Link
                       to={`/admin/events/${event.id}/edit`}
-                      className="text-gray-400 hover:text-emerald-700"
+                      className="text-gray-800 hover:text-green-700"
                     >
                       <Pencil size={15} />
                     </Link>
-                    <button className="text-gray-400 hover:text-red-600">
+                    <button className="text-red-600 hover:text-red-700">
                       <Trash2 size={15} />
                     </button>
                   </div>

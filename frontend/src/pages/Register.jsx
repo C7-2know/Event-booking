@@ -1,5 +1,51 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
-import { AuthPage, Field } from './Login'
-export default function Register(){const {register}=useAuth(),nav=useNavigate(),[form,setForm]=useState({name:'',email:'',password:''}),[loading,setLoading]=useState(false);const submit=async e=>{e.preventDefault();setLoading(true);await register(form);nav('/')};return <AuthPage title="Make room for good plans" subtitle="Create an account to reserve your place and manage your bookings."><form onSubmit={submit} className="mt-8 space-y-5"><Field label="Full name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/><Field label="Email address" type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/><Field label="Password" type="password" value={form.password} onChange={e=>setForm({...form,password:e.target.value})}/><button disabled={loading} className="btn-primary mt-2 w-full">{loading?'Creating account…':'Create account'}</button><p className="text-center text-sm text-muted">Already have an account? <Link to="/login" className="font-semibold text-emerald">Sign in</Link></p></form></AuthPage>}
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { AuthPage, Field } from "./Login";
+export default function Register() {
+  const { register } = useAuth(),
+    nav = useNavigate(),
+    [form, setForm] = useState({ name: "", email: "", password: "" }),
+    [loading, setLoading] = useState(false);
+  const submit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await register(form);
+    nav("/");
+  };
+  return (
+    <AuthPage
+      title="Make room for good plans"
+      subtitle="Create an account to reserve your place and manage your bookings."
+    >
+      <form onSubmit={submit} className="mt-8 space-y-5">
+        <Field
+          label="Full name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+        />
+        <Field
+          label="Email address"
+          type="email"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+        />
+        <Field
+          label="Password"
+          type="password"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+        />
+        <button disabled={loading} className="btn-primary mt-2 w-full">
+          {loading ? "Creating account…" : "Create account"}
+        </button>
+        <p className="text-center text-sm text-muted">
+          Already have an account?{" "}
+          <Link to="/login" className="font-semibold text-emerald">
+            Sign in
+          </Link>
+        </p>
+      </form>
+    </AuthPage>
+  );
+}
