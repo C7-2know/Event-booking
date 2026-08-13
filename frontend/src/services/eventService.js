@@ -144,6 +144,11 @@ export const eventService = {
       async () => normalizeEvent((await client.get(`/events/${id}`)).data),
       () => pause(events.find((e) => e.id === id)),
     ),
+  getWeeklyEvents: () =>
+    (async () => {
+      const response = await client.get("/events/weekly");
+      return response.data.map(normalizeEvent);
+    })(),
   create: (data) =>
     (async () => {
       const response = await client.post("/events", toBackendEvent(data));
