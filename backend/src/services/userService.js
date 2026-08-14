@@ -54,6 +54,18 @@ class UserService {
     return updatedUser;
   }
 
+  async uploadProfilePicture(userId, path) {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePicture: path },
+      { returnDocument: "after" },
+    );
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+    return updatedUser;
+  }
+
   async deleteUser(userId) {
     const user = await User.findByIdAndDelete(userId);
     if (!user) {
