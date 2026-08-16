@@ -51,4 +51,16 @@ export const userService = {
     const response = await client.put(`/users/${userId}`, profileData);
     return response.data;
   },
+  uploadProfilePicture: async (userId, file) => {
+    const formData = new FormData();
+
+    formData.append("profile_picture", file);
+
+    const response = await client.put(
+      `/users/${userId}/profile-picture`,
+      formData,
+    );
+
+    return response.data;
+  },
 };
